@@ -2,15 +2,42 @@
   "name": "avengers-street-fight-electron",
   "version": "1.0.0",
   "description": "A minimal game build on top of Electron",
+  "main": "build/main.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "start": "npm run build && electron ./dist/main.js",
-    "start:dev": "npm run watch & npm run start"
+    "start": "npm run build && electron ./build/main.js",
+    "start:dev": "npm run watch & npm run start",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder ",
+    "postinstall": "electron-builder install-app-deps",
+    "release:all": "electron-builder -mwl",
+    "release:win": "electron-builder -w",
+    "release:mac": "electron-builder -m",
+    "release:lin": "electron-builder -l"
+  },
+  "author": "Nicolae Cacior",
+  "build": {
+    "appId": "com.example.avengers-street-fight-game",
+    "files": [
+      "build/**/*",
+      "assets/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "resources"
+    },
+    "extraFiles": [
+      "index.html",
+      "assets"
+    ],
+    "publish": null
   },
   "devDependencies": {
     "electron": "^4.1.4",
+    "electron-builder": "^20.39.0",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3"
   },
