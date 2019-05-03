@@ -9,7 +9,6 @@
     "start": "npm run build && electron ./dist/main.js",
     "start:dev": "npm run watch & npm run start"
   },
-  "author": "Cacior Nicolae",
   "devDependencies": {
     "electron": "^4.1.4",
     "tslint": "^5.10.0",

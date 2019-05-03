@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 function charPicker(char) {
     return `
@@ -25,6 +33,12 @@ function charPicker(char) {
     `;
 }
 exports.charPicker = charPicker;
+function wait(ms) {
+    return new Promise((resolve, rej) => {
+        setTimeout(resolve, ms);
+    });
+}
+exports.wait = wait;
 function planetPicker(planet) {
     return `
     <div class="col-4 mx-auto my-3 planet chose_planet" data-id="${planet.id}">
@@ -45,6 +59,45 @@ function planetPicker(planet) {
     `;
 }
 exports.planetPicker = planetPicker;
+function charCard(char) {
+    return `
+	<div class="card">
+  <img class="card-img-top" src="assets/images/${char.id}.jpg" alt="${char.name}">
+  <div class="card-body">
+    <h5 class="card-title">${char.name}</h5>
+	<p class="card-text">
+	Health: ${char.health}
+	Attack: ${char.attack}
+	</p>
+  </div>
+</div>
+	
+	`;
+}
+exports.charCard = charCard;
+function planetCard(planet) {
+    return `
+	<div class="card">
+  <div class="card-body text-center">
+	<h5 class="card-title">${planet.name}</h5>
+		<p class="card-text">
+			Heroes Health Modifier: ${planet.heroHealthModifier}
+		</p>
+		<p class="card-text">
+		Heroes Attack Modifier: ${planet.heroAttackModifier}
+			</p>
+		<p class="card-text">
+		Villain Health Modifier: ${planet.villainHealthModifier}
+			</p>
+		<p class="card-text">
+		Villain Attack Modifier: ${planet.villainAttackModifier}
+			</p>
+  </div>
+</div>
+	
+	`;
+}
+exports.planetCard = planetCard;
 function removeClassFromElements(elements, cls) {
     [...elements].forEach((el) => el.classList.remove(cls));
 }
@@ -62,11 +115,12 @@ class Planet {
 }
 exports.Planet = Planet;
 class Character {
-    constructor(name, health, attack, isVillain) {
+    constructor(name, health, attack, isVillain, id) {
         this.name = name;
         this.health = health;
         this.attack = attack;
         this.isVillain = isVillain;
+        this.id = id;
     }
     applyModifier(planet) {
         if (this.isVillain) {
@@ -95,20 +149,45 @@ class Character {
     }
 }
 exports.Character = Character;
-function fight(char1, char2, planet) {
-    let turn = 1;
-    char1.applyModifier(planet);
-    char2.applyModifier(planet);
-    while (char1.isAlive() || char2.isAlive()) {
-        char1.attacks(char2);
-        char2.attacks(char1);
-        turn++;
-    }
-    console.log(`
-    Turns:${turn}\n
-    Winner: ${char1.isAlive() ? char1.name : char2.name}\n
-    Planet: ${planet.name}
-    `);
+function fight(char1, char2, planet, elements) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let turn = 1;
+        let charWaitTime = 300;
+        let turnWaitTime = 100;
+        char1.applyModifier(planet);
+        char2.applyModifier(planet);
+        elements.planet.innerHTML = planetCard(planet);
+        elements.char1.innerHTML = charCard(char1);
+        elements.char2.innerHTML = charCard(char2);
+        while (char1.isAlive() && char2.isAlive()) {
+            elements.turn.innerText = turn;
+            yield wait(turnWaitTime);
+            char1.attacks(char2);
+            yield wait(charWaitTime);
+            elements.char1.innerHTML = charCard(char1);
+            char2.attacks(char1);
+            yield wait(charWaitTime);
+            elements.char2.innerHTML = charCard(char2);
+            turn++;
+        }
+        elements.turn.innerText = turn;
+        elements.results.innerHTML = `
+	<div class="col-12">
+	<h3 class="text-center">Results</h3>
+	</div>
+	<div class="col-12 border rounded">
+	<p class="text-center my-1">
+		Turns:${turn}
+	</p>
+	<p class="text-center my-1">
+		Winner: ${char1.isAlive() ? char1.name : char2.name}
+	</p>
+	<p class="text-center my-1">
+		Planet: ${planet.name}
+	</p>
+	</div>
+    `;
+    });
 }
 exports.fight = fight;
 //# sourceMappingURL=helper.js.map

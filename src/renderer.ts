@@ -29,6 +29,9 @@ var chosenHero = 0;
 var chosenVillian = 0;
 var chosenPlanet = 0;
 
+var fightWindow = document.getElementById('fight');
+var menuWindow = document.getElementById('menu');
+
 [ ...document.getElementsByClassName('chose_char') ].forEach((el) =>
 	el.addEventListener('click', (e) => {
 		//@ts-ignore
@@ -66,35 +69,55 @@ document.getElementById('start').addEventListener('click', (e) => {
 	init();
 });
 
+document.getElementById('replay').addEventListener('click', (e) => {
+	menuWindow.classList.remove('hide');
+	fightWindow.classList.add('hide');
+	removeClassFromElements(document.getElementsByClassName('planet'), 'selected');
+	removeClassFromElements(document.getElementsByClassName('villain'), 'selected');
+	removeClassFromElements(document.getElementsByClassName('hero'), 'selected');
+});
+
 function init() {
 	console.log(`
     heroID: ${chosenHero}\n
     villainID: ${chosenVillian}\n
     planetID: ${chosenPlanet}\n
     `);
-
+	chosenHero -= 1;
+	chosenVillian -= 1;
+	chosenPlanet -= 1;
 	hero = new Character(
-		chars[chosenHero - 1].name,
-		chars[chosenHero - 1].health,
-		chars[chosenHero - 1].attack,
-		chars[chosenHero - 1].isVillain
+		chars[chosenHero].name,
+		chars[chosenHero].health,
+		chars[chosenHero].attack,
+		chars[chosenHero].isVillain,
+		chosenHero + 1
 	);
-	console.log(hero);
-	villain = new Character(
-		chars[chosenVillian - 1].name,
-		chars[chosenVillian - 1].health,
-		chars[chosenVillian - 1].attack,
-		chars[chosenVillian - 1].isVillain
-	);
-	console.log(villain);
-	planet = new Planet(
-		planets[chosenPlanet - 1].name,
-		planets[chosenPlanet - 1].modifiers.heroAttackModifier,
-		planets[chosenPlanet - 1].modifiers.heroHealthModifier,
-		planets[chosenPlanet - 1].modifiers.villainAttackModifier,
-		planets[chosenPlanet - 1].modifiers.villainHealthModifier
-	);
-	console.log(planet);
 
-	fight(hero, villain, planet);
+	villain = new Character(
+		chars[chosenVillian].name,
+		chars[chosenVillian].health,
+		chars[chosenVillian].attack,
+		chars[chosenVillian].isVillain,
+		chosenVillian + 1
+	);
+
+	planet = new Planet(
+		planets[chosenPlanet].name,
+		planets[chosenPlanet].modifiers.heroAttackModifier,
+		planets[chosenPlanet].modifiers.heroHealthModifier,
+		planets[chosenPlanet].modifiers.villainAttackModifier,
+		planets[chosenPlanet].modifiers.villainHealthModifier
+	);
+
+	menuWindow.classList.add('hide');
+	fightWindow.classList.remove('hide');
+
+	fight(hero, villain, planet, {
+		char1: document.getElementById('char1'),
+		char2: document.getElementById('char2'),
+		planet: document.getElementById('planet'),
+		turn: document.getElementById('turn'),
+		results: document.getElementById('results')
+	});
 }

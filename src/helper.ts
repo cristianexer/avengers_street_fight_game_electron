@@ -23,6 +23,12 @@ export function charPicker(char: any) {
     `;
 }
 
+export function wait(ms: number) {
+	return new Promise((resolve, rej) => {
+		setTimeout(resolve, ms);
+	});
+}
+
 export function planetPicker(planet: any) {
 	return `
     <div class="col-4 mx-auto my-3 planet chose_planet" data-id="${planet.id}">
@@ -41,6 +47,45 @@ export function planetPicker(planet: any) {
         </div>
     </div>
     `;
+}
+
+export function charCard(char: any) {
+	return `
+	<div class="card">
+  <img class="card-img-top" src="assets/images/${char.id}.jpg" alt="${char.name}">
+  <div class="card-body">
+    <h5 class="card-title">${char.name}</h5>
+	<p class="card-text">
+	Health: ${char.health}
+	Attack: ${char.attack}
+	</p>
+  </div>
+</div>
+	
+	`;
+}
+
+export function planetCard(planet: any) {
+	return `
+	<div class="card">
+  <div class="card-body text-center">
+	<h5 class="card-title">${planet.name}</h5>
+		<p class="card-text">
+			Heroes Health Modifier: ${planet.heroHealthModifier}
+		</p>
+		<p class="card-text">
+		Heroes Attack Modifier: ${planet.heroAttackModifier}
+			</p>
+		<p class="card-text">
+		Villain Health Modifier: ${planet.villainHealthModifier}
+			</p>
+		<p class="card-text">
+		Villain Attack Modifier: ${planet.villainAttackModifier}
+			</p>
+  </div>
+</div>
+	
+	`;
 }
 
 export function removeClassFromElements(elements: any, cls: string) {
@@ -72,16 +117,18 @@ export class Planet {
 }
 
 export class Character {
+	id: number;
 	name: string;
 	health: number;
 	attack: number;
 	isVillain: boolean;
 
-	constructor(name: string, health: number, attack: number, isVillain: boolean) {
+	constructor(name: string, health: number, attack: number, isVillain: boolean, id: number) {
 		this.name = name;
 		this.health = health;
 		this.attack = attack;
 		this.isVillain = isVillain;
+		this.id = id;
 	}
 
 	public applyModifier(planet: Planet): void {
@@ -114,21 +161,48 @@ export class Character {
 	}
 }
 
-export function fight(char1: Character, char2: Character, planet: Planet) {
+export async function fight(char1: Character, char2: Character, planet: Planet, elements: any) {
 	let turn: number = 1;
+	let charWaitTime = 300;
+	let turnWaitTime = 100;
 
 	char1.applyModifier(planet);
 	char2.applyModifier(planet);
 
-	while (char1.isAlive() || char2.isAlive()) {
+	elements.planet.innerHTML = planetCard(planet);
+	elements.char1.innerHTML = charCard(char1);
+	elements.char2.innerHTML = charCard(char2);
+
+	while (char1.isAlive() && char2.isAlive()) {
+		elements.turn.innerText = turn;
+
+		await wait(turnWaitTime);
 		char1.attacks(char2);
+
+		await wait(charWaitTime);
+		elements.char1.innerHTML = charCard(char1);
+
 		char2.attacks(char1);
+		await wait(charWaitTime);
+		elements.char2.innerHTML = charCard(char2);
+
 		turn++;
 	}
-
-	console.log(`
-    Turns:${turn}\n
-    Winner: ${char1.isAlive() ? char1.name : char2.name}\n
-    Planet: ${planet.name}
-    `);
+	elements.turn.innerText = turn;
+	elements.results.innerHTML = `
+	<div class="col-12">
+	<h3 class="text-center">Results</h3>
+	</div>
+	<div class="col-12 border rounded">
+	<p class="text-center my-1">
+		Turns:${turn}
+	</p>
+	<p class="text-center my-1">
+		Winner: ${char1.isAlive() ? char1.name : char2.name}
+	</p>
+	<p class="text-center my-1">
+		Planet: ${planet.name}
+	</p>
+	</div>
+    `;
 }
