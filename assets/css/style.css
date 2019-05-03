@@ -1,0 +1,30 @@
+* {
+    background-color: #333;
+    color: #fff;
+}
+
+.char.selected .description {
+    display: inherit;
+}
+
+.char .description {
+    display: none;
+}
+
+.char img {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+}
+
+.char {
+    cursor: pointer;
+}
+
+.planet.selected .description {
+    display: inherit;
+}
+
+.planet .description {
+    display: none;
+}

@@ -1,0 +1,27 @@
+{
+  "name": "avengers-street-fight-electron",
+  "version": "1.0.0",
+  "description": "A minimal game build on top of Electron",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "start": "npm run build && electron ./dist/main.js",
+    "start:dev": "npm run watch & npm run start"
+  },
+  "author": "Cacior Nicolae",
+  "devDependencies": {
+    "electron": "^4.1.4",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3"
+  },
+  "dependencies": {
+    "@types/bootstrap": "^4.3.0",
+    "@types/jquery": "^3.3.29",
+    "@types/popper.js": "^1.11.0",
+    "boostrap": "^2.0.0",
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.0",
+    "popper.js": "^1.15.0"
+  }
+}
