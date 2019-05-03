@@ -6,7 +6,7 @@ export function charPicker(char: any) {
         <div class="row">
             <div class="col-2 mx-auto border-right">
                
-                    <img src="assets/images/${char.id}.jpg" alt="${char.name}" class="img-fluid">
+                    <img src="../../assets/images/${char.id}.jpg" alt="${char.name}" class="img-fluid">
                
             </div>
             <div class="col-10 mx-auto text-center">
@@ -52,7 +52,7 @@ export function planetPicker(planet: any) {
 export function charCard(char: any) {
 	return `
 	<div class="card">
-  <img class="card-img-top" src="assets/images/${char.id}.jpg" alt="${char.name}">
+  <img class="card-img-top" src="../../assets/images/${char.id}.jpg" alt="${char.name}">
   <div class="card-body">
     <h5 class="card-title">${char.name}</h5>
 	<p class="card-text">
