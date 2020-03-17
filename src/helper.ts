@@ -1,12 +1,12 @@
 export function charPicker(char: any) {
 	return `
     <div class="col-12 mx-auto my-3 border rounded char chose_char ${char.isVillain === true
-		? 'villain'
-		: 'hero'}" data-id="${char.id}" data-type="${char.isVillain === true ? 'villain' : 'hero'}">
+			? 'villain'
+			: 'hero'}" data-id="${char.id}" data-type="${char.isVillain === true ? 'villain' : 'hero'}">
         <div class="row">
             <div class="col-2 mx-auto border-right">
                
-                    <img src="../../assets/images/${char.id}.jpg" alt="${char.name}" class="img-fluid">
+                    <img src="assets/images/${char.id}.jpg" alt="${char.name}" class="img-fluid">
                
             </div>
             <div class="col-10 mx-auto text-center">
@@ -52,7 +52,7 @@ export function planetPicker(planet: any) {
 export function charCard(char: any) {
 	return `
 	<div class="card">
-  <img class="card-img-top" src="../../assets/images/${char.id}.jpg" alt="${char.name}">
+  <img class="card-img-top" src="assets/images/${char.id}.jpg" alt="${char.name}">
   <div class="card-body">
     <h5 class="card-title">${char.name}</h5>
 	<p class="card-text">
@@ -89,10 +89,10 @@ export function planetCard(planet: any) {
 }
 
 export function removeClassFromElements(elements: any, cls: string) {
-	[ ...elements ].forEach((el) => el.classList.remove(cls));
+	[...elements].forEach((el) => el.classList.remove(cls));
 }
 
-export function choseRandomChar(charsLength: number) {}
+export function choseRandomChar(charsLength: number) { }
 
 export class Planet {
 	name: string;

@@ -11,10 +11,10 @@ let heroesList = document.getElementById('heroes');
 let planetsList = document.getElementById('planets');
 
 //@ts-ignore
-import * as chars from '../../../assets/data/characters.json';
+import * as chars from '../assets/data/characters.json';
 
 //@ts-ignore
-import * as planets from '../../../assets/data/planets.json';
+import * as planets from '../assets/data/planets.json';
 
 import { Planet, Character } from './helper';
 
@@ -32,7 +32,7 @@ var chosenPlanet = 0;
 var fightWindow = document.getElementById('fight');
 var menuWindow = document.getElementById('menu');
 
-[ ...document.getElementsByClassName('chose_char') ].forEach((el) =>
+[...document.getElementsByClassName('chose_char')].forEach((el) =>
 	el.addEventListener('click', (e) => {
 		//@ts-ignore
 		if (el.dataset.type === 'hero') {
@@ -51,7 +51,7 @@ var menuWindow = document.getElementById('menu');
 	})
 );
 
-[ ...document.getElementsByClassName('chose_planet') ].forEach((el) =>
+[...document.getElementsByClassName('chose_planet')].forEach((el) =>
 	el.addEventListener('click', (e) => {
 		//@ts-ignore
 		chosenPlanet = el.dataset.id;
